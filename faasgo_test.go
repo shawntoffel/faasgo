@@ -5,6 +5,8 @@ import (
 )
 
 func TestListFunctions(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	entries, err := g.ListFunctions()
@@ -16,6 +18,8 @@ func TestListFunctions(t *testing.T) {
 }
 
 func TestDeployFunction(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	f := Function{
@@ -40,6 +44,8 @@ func TestDeployFunction(t *testing.T) {
 }
 
 func TestUpdateFunction(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	f := Function{
@@ -69,6 +75,8 @@ func TestUpdateFunction(t *testing.T) {
 }
 
 func TestDeleteFunction(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	f := Function{
@@ -93,6 +101,8 @@ func TestDeleteFunction(t *testing.T) {
 }
 
 func TestScaleFunction(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	f := Function{
@@ -127,6 +137,8 @@ func TestScaleFunction(t *testing.T) {
 }
 
 func TestGetFunction(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	f := Function{
@@ -158,6 +170,8 @@ func TestGetFunction(t *testing.T) {
 }
 
 func TestSystemInfo(t *testing.T) {
+	t.Skip()
+
 	g := New(DefaultUrl)
 
 	info, err := g.SystemInfo()
