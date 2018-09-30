@@ -21,7 +21,12 @@ func (g Gateway) request(method string, endpoint string, data interface{}, outpu
 		return err
 	}
 
-	req.SetBasicAuth(os.Getenv("FAASGO_USER"), os.Getenv("FAASGO_PASS"))
+	user := os.Getenv("FAASGO_USER")
+
+	if user != "" {
+		req.SetBasicAuth(user, os.Getenv("FAASGO_PASS"))
+	}
+
 	req.Header.Add("Content-Type", "application/json")
 
 	return g.doRequest(req, output)
