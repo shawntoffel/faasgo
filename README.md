@@ -1,2 +1,2 @@
 # faasgo
-golang api client for the openfaas gateway
+swaggerless golang api client for the openfaas gateway
