@@ -57,22 +57,14 @@ func (g Gateway) DeleteFunction(r DeleteFunctionRequest) error {
 	return nil
 }
 
-func (g Gateway) Invoke(name string, body interface{}, response interface{}) error {
-	err := g.request("POST", g.BaseUrl+FunctionEndpoint+"/"+name, body, response)
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (g Gateway) Invoke(name string, body []byte) ([]byte, error) {
+	return g.simpleRequest("POST", g.BaseUrl+FunctionEndpoint+"/"+name, body)
 }
 
-func (g Gateway) InvokeAsync(name string, body interface{}) error {
-	err := g.request("POST", g.BaseUrl+AsyncFunctionEndpoint+"/"+name, body, nil)
-	if err != nil {
-		return err
-	}
+func (g Gateway) InvokeAsync(name string, body []byte) error {
+	_, err := g.simpleRequest("POST", g.BaseUrl+AsyncFunctionEndpoint+"/"+name, body)
 
-	return nil
+	return err
 }
 
 func (g Gateway) ScaleFunction(name string, r ScaleFunctionRequest) error {

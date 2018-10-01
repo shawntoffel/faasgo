@@ -48,9 +48,33 @@ func (g Gateway) doRequest(req *http.Request, output interface{}) error {
 	return decodeJson(resp.Body, output)
 }
 
+func (g Gateway) simpleRequest(method string, endpoint string, body []byte) ([]byte, error) {
+	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := g.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	err = checkErrors(resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return ioutil.ReadAll(resp.Body)
+}
+
 func checkErrors(response *http.Response) error {
 	if response.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(response.Body)
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			return err
+		}
 		return fmt.Errorf("%d: %s", response.StatusCode, string(body))
 	}
 
