@@ -20,7 +20,7 @@ func main() {
 	log.Println("deploying function")
 	err := g.DeployFunction(f)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to deploy function: %s", err.Error())
 	}
 
 	log.Println("Waiting a bit for function to finish deploying")
