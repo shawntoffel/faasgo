@@ -10,7 +10,7 @@ swaggerless golang api client for the [OpenFaaS gateway](https://github.com/open
 go get github.com/shawntoffel/faasgo
 ```
 
-## Environment Variables
+## Authentication
 OpenFaaS uses basic authentication. 
 
 ```
@@ -28,6 +28,7 @@ Alternatively, credentials can be read from a file where the file location is sp
 FAASGO_USER_FILE
 FAASGO_PASS_FILE
 ```
+The file path may be a docker secret location. 
 
 ## Basic Usage
 
