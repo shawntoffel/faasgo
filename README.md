@@ -11,10 +11,23 @@ go get github.com/shawntoffel/faasgo
 ```
 
 ## Environment Variables
-OpenFaaS uses basic authentication. Credentials are read from the following environment variables:
+## Environment Variables
+OpenFaaS uses basic authentication. 
+
+```
+gateway.SetBasicAuth("user", "password")
+```
+
+If you do not specify a user/pass with `SetBasicAuth` credentials are read from the following environment variables:
 ```bash
-export FAASGO_USER=admin
-export FAASGO_PASS=<pass>
+FAASGO_USER
+FAASGO_PASS
+```
+
+Alternatively, credentials can be read from a file where the file location is specified by the following environment variables:
+```bash
+FAASGO_USER_FILE
+FAASGO_PASS_FILE
 ```
 
 ## Basic Usage
