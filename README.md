@@ -11,7 +11,6 @@ go get github.com/shawntoffel/faasgo
 ```
 
 ## Environment Variables
-## Environment Variables
 OpenFaaS uses basic authentication. 
 
 ```
