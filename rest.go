@@ -7,7 +7,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
 )
 
 func (g Gateway) request(method string, endpoint string, data interface{}, output interface{}) error {
@@ -21,10 +20,8 @@ func (g Gateway) request(method string, endpoint string, data interface{}, outpu
 		return err
 	}
 
-	user := os.Getenv("FAASGO_USER")
-
-	if user != "" {
-		req.SetBasicAuth(user, os.Getenv("FAASGO_PASS"))
+	if g.user != "" || g.pass != "" {
+		req.SetBasicAuth(g.user, g.pass)
 	}
 
 	req.Header.Add("Content-Type", "application/json")
@@ -70,15 +67,15 @@ func (g Gateway) simpleRequest(method string, endpoint string, body []byte) ([]b
 }
 
 func checkErrors(response *http.Response) error {
-	if response.StatusCode != 200 {
-		body, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			return err
-		}
-		return fmt.Errorf("%d: %s", response.StatusCode, string(body))
+	if response.StatusCode >= 200 && response.StatusCode <= 299 {
+		return nil
 	}
 
-	return nil
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	return fmt.Errorf("%d: %s", response.StatusCode, string(body))
 }
 
 func decodeJson(body io.Reader, into interface{}) error {

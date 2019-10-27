@@ -1,7 +1,9 @@
 package faasgo
 
 import (
+	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 const DefaultUrl = "http://127.0.0.1:8080"
@@ -9,6 +11,8 @@ const DefaultUrl = "http://127.0.0.1:8080"
 type Gateway struct {
 	BaseUrl string
 	Client  *http.Client
+	user    string
+	pass    string
 }
 
 func New(endpoint string) Gateway {
@@ -16,7 +20,17 @@ func New(endpoint string) Gateway {
 }
 
 func NewWithClient(endpoint string, client *http.Client) Gateway {
-	return Gateway{BaseUrl: endpoint, Client: client}
+	return Gateway{
+		BaseUrl: endpoint,
+		Client:  client,
+		user:    readSecretEnv("FAASGO_USER"),
+		pass:    readSecretEnv("FAASGO_PASS"),
+	}
+}
+
+func (g Gateway) SetBasicAuth(user string, pass string) {
+	g.user = user
+	g.pass = pass
 }
 
 func (g Gateway) ListFunctions() ([]FunctionListEntry, error) {
@@ -96,4 +110,23 @@ func (g Gateway) SystemInfo() (Info, error) {
 	}
 
 	return i, nil
+}
+
+func readSecretEnv(name string) string {
+	env := os.Getenv(name)
+	if env != "" {
+		return env
+	}
+
+	file := os.Getenv(name + "_FILE")
+	if file == "" {
+		return ""
+	}
+
+	bytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		return ""
+	}
+
+	return string(bytes)
 }
